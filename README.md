@@ -5,7 +5,7 @@ This script will extract data, transform and load it to custom DB.
 
 
 ## Usage
-To download data from 2019:
+To run script with data from 2019:
 `sh main.sh -y 2019`
 
 **Note:**
