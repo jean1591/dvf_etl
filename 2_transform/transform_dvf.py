@@ -6,6 +6,12 @@ from progress.bar import ShadyBar
 
 
 def get_year():
+    """
+    Get year from args
+
+    Returns:
+        int: year to ETL
+    """
     parser = argparse.ArgumentParser()
 
     # Retrieve year passed in args
@@ -17,7 +23,15 @@ def get_year():
 
 
 def csv_to_df(year):
-    # CSV TO DATAFRAME
+    """
+    Load csv file to a DataFrame
+
+    Args:
+        year (int): Year of the file
+
+    Returns:
+        DataFrame: Full DataFrame on specified columns
+    """
     # Specify columns to load
     cols_to_load = ["id_mutation", "date_mutation", "nature_mutation", "valeur_fonciere", "adresse_numero", "adresse_suffixe", "adresse_nom_voie", "code_postal",
                     "nom_commune", "code_departement", "id_parcelle", "type_local", "surface_reelle_bati", "nombre_pieces_principales", "surface_terrain", "longitude", "latitude"]
@@ -41,6 +55,15 @@ def csv_to_df(year):
 
 
 def drop_na(df):
+    """
+    Drop rows with na values on given columns
+
+    Args:
+        df (DataFrame): DataFrame in which to perform the dropna
+
+    Returns:
+        DataFrame: Update DataFrame
+    """
     # DROP NA
     mandatory_rows = ["typeOfSearch", "price"]
     optional_rows = ["typeOfBuilding", "surface", "nbRoom"]
@@ -51,7 +74,15 @@ def drop_na(df):
 
 
 def update_fields_values(df):
-    # UPDATE FIELDS VALUES
+    """
+    Update values from specific columns
+
+    Args:
+        df (DataFrame): DataFrame on which to perform the modifications
+
+    Returns:
+        DataFrame: Update DataFrame
+    """
     # typeOfBuilding
     df["typeOfBuilding"] = df["typeOfBuilding"].str.lower()
 
@@ -64,13 +95,28 @@ def update_fields_values(df):
 
 
 def drop_useless_rows(df):
-    # DROP USELESS ROWS
-    df = df[df["typeOfBuilding"].isin(["appartement", "maison"])]
-    return df
+    """
+    Drop rows with typeOfBuilding not in ["appartement", "maison"]
+
+    Args:
+        df (DataFrame): DataFrame on which to perform the modifications
+
+    Returns:
+        DataFrame: Update DataFrame
+    """
+    return df[df["typeOfBuilding"].isin(["appartement", "maison"])]
 
 
 def validation(df):
-    # VALIDATION
+    """
+    Drop rows that does not match criterea
+
+    Args:
+        df (DataFrame): DataFrame on which to perform the modifications
+
+    Returns:
+        DataFrame: Update DataFrame
+    """
     # Price / Surface / TypeOfSearch
     df = df[(df["price"] > 4999) & (df["price"] < 1999999)]
 
@@ -83,11 +129,20 @@ def validation(df):
 
 
 def save_df(df, year):
-    # SAVE
+    """
+    Save df as csv file with year in filename
+
+    Args:
+        df (DataFrame): DataFrame to save
+        year (int): Year of the DataFrame
+    """
     df.to_csv(f"data/dvf_{year}_updated.csv")
 
 
 def main():
+    """
+    Perform TRANSFORM on csv file with year passed as args
+    """
 
     # Init bar
     bar = ShadyBar(
