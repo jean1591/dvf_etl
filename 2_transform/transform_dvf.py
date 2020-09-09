@@ -83,10 +83,10 @@ def update_fields_values(df):
     Returns:
         DataFrame: Update DataFrame
     """
-    # typeOfBuilding
+    # Lowercase on all typeOfBuilding
     df["typeOfBuilding"] = df["typeOfBuilding"].str.lower()
 
-    # typeOfSearch
+    # Lowercase on all typeOfSearch & Update "vente" to "achat"
     df["typeOfSearch"] = df["typeOfSearch"].str.lower()
     df["typeOfSearch"] = np.where(
         df["typeOfSearch"] == "vente", "achat", df["typeOfSearch"])
