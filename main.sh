@@ -9,7 +9,7 @@ do
   esac
 done
 
-echo ">> PERFORMING ETL ON DVF-$year <<"
+echo ">> PERFORMING ETL ON DVF_$year <<"
 
 echo
 echo ">> EXTRACT"
