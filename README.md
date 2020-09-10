@@ -37,9 +37,10 @@ Load extracted file into pandas DataFrame and perform following treatments:
   - `typeOfSearch` is limited to `achat`
 - Groupby: Group per `_idMutation` and sum `surface` and `nbRoom` together (`price` being already summed up). For all other rows, the first element is retrieved and displayed
 
-
 ### Load
-To do
+Done with bash.   
+Load updated CSV file to MongoDB using `mongoimport`.
+
 
 ## Python dependancies
 Dependancies | Purpose | Install
