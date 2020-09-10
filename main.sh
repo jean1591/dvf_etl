@@ -20,4 +20,9 @@ echo
 echo ">> TRANSFORM"
 python3 2_transform/transform_dvf.py -y $year
 
+echo
+echo ">> LOAD"
+sh 3_load/load_dvf.sh -y $year
+
+echo
 echo ">> EOF <<"
