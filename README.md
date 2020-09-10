@@ -21,6 +21,24 @@ Download data from [dvf](https://cadastre.data.gouv.fr/data/etalab-dvf/latest/cs
 Done with Python & pandas.
 Load extracted file into Python with pandas and perform transform on file.
 
+#### Treatment
+- Load csv file to DataFrame
+- Drop rows if:
+  - `typeOfSearch` or `price` are `NaN`
+  - `typeOfBuilding`, `surface` and `nbRoom` are `NaN` 
+- Update fields values:
+  - `typeOfBuilding` to lowercase
+  - `typeOfSearch` to lowercase
+  - `Vente` is updated to `achat`
+- Drop useless rows:
+  - `typeOfBuilding` must be either `appartement` or `maison`
+- Validation:
+  - `price` must be bounds to 4 999 and 1 999 999
+  - `surface` must be bounds to 10 and 1 000
+  - `typeOfSearch` is limited to `achat`
+- Groupby: Group per `_idMutation` and sum `surface` and `nbRoom` together (`price` being already summed up). For all other rows, the first element is retrieved and displayed
+
+
 ### Load
 To do
 
