@@ -35,11 +35,11 @@ def csv_to_df(year):
     """
     # Specify columns to load
     cols_to_load = ["id_mutation", "date_mutation", "nature_mutation", "valeur_fonciere", "adresse_numero", "adresse_suffixe", "adresse_nom_voie", "code_postal",
-                    "nom_commune", "code_departement", "id_parcelle", "type_local", "surface_reelle_bati", "nombre_pieces_principales", "surface_terrain", "longitude", "latitude"]
+                    "nom_commune", "code_departement", "type_local", "surface_reelle_bati", "nombre_pieces_principales", "longitude", "latitude"]
 
     # Specify columns types
     cols_types = {"id_mutation": str, "nature_mutation": str, "valeur_fonciere": float, "adresse_numero": "Int64", "adresse_suffixe": str, "adresse_nom_voie": str, "code_postal": str,
-                  "nom_commune": str, "code_departement": str, "id_parcelle": str, "type_local": str, "surface_reelle_bati": float, "nombre_pieces_principales": float, "surface_terrain": float, "longitude": str, "latitude": str}
+                  "nom_commune": str, "code_departement": str, "type_local": str, "surface_reelle_bati": float, "nombre_pieces_principales": float, "longitude": str, "latitude": str}
 
     # Read csv ad DataFrame with specified columns
     df = pd.read_csv(
@@ -50,7 +50,7 @@ def csv_to_df(year):
 
     # Rename columns
     df.columns = ["_idMutation", "createdAt", "typeOfSearch", "price", "streetNumber", "houseNumber", "streetName",
-                  "postalCode", "city", "departement", "plotId", "typeOfBuilding", "surface", "nbRoom", "surfacePlot", "longitude", "latitude"]
+                  "postalCode", "city", "departement", "typeOfBuilding", "surface", "nbRoom", "longitude", "latitude"]
 
     return df
 
@@ -140,19 +140,8 @@ def groupby(df):
         DataFrame: Update DataFrame
     """
     return df.groupby("_idMutation", as_index=True).agg({
-        "createdAt": "first",
-        "typeOfSearch": "first",
-        "price": "first",
-        "streetNumber": "first",
-        "streetName": "first",
-        "postalCode": "first",
-        "city": "first",
-        "departement": "first",
-        "typeOfBuilding": "first",
-        "surface": "sum",
-        "nbRoom": "sum",
-        "longitude": "first",
-        "latitude": "first"
+        "createdAt": "first", "typeOfSearch": "first", "price": "first", "streetNumber": "first", "houseNumber": "first", "streetName": "first",
+        "postalCode": "first", "city": "first", "departement": "first", "typeOfBuilding": "first", "surface": "sum", "nbRoom": "sum", "longitude": "first", "latitude": "first"
     })
 
 
@@ -189,16 +178,16 @@ def main(timer=False):
     dvf_DF = drop_na(dvf_DF)
     bar.next()
 
-    update_fields_values(dvf_DF)
+    dvf_DF = update_fields_values(dvf_DF)
     bar.next()
 
-    drop_useless_rows(dvf_DF)
+    dvf_DF = drop_useless_rows(dvf_DF)
     bar.next()
 
-    validation(dvf_DF)
+    dvf_DF = validation(dvf_DF)
     bar.next()
 
-    groupby(dvf_DF)
+    dvf_DF = groupby(dvf_DF)
     bar.next()
 
     save_df(dvf_DF, year)
