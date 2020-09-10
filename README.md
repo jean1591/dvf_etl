@@ -9,22 +9,21 @@ To run script with data from 2019:
 `sh main.sh -y 2019`
 
 **Note:**
-Minimum value year is 2014, maximum is 2019.
+Minimum year value is 2014, maximum is 2019.
 
 
 ## Details
 ### Extract
-Done with bash.
-Download data from [dvf](https://cadastre.data.gouv.fr/data/etalab-dvf/latest/csv/) as `abc.csv.gz` file, and extract data and delete downloaded file.
+Done with bash.   
+Download data from [dvf](https://cadastre.data.gouv.fr/data/etalab-dvf/latest/csv/) as `filename.csv.gz`, extract data into `filename.csv` and delete downloaded file.
 
 ### Transform
-Done with Python & pandas.
-Load extracted file into Python with pandas and perform transform on file.
+Done with Python & pandas.   
+Load extracted file into pandas DataFrame and perform following treatments:
 
-#### Treatment
 - Load csv file to DataFrame
 - Drop rows if:
-  - `typeOfSearch` or `price` are `NaN`
+  - either `typeOfSearch` or `price` are `NaN`
   - `typeOfBuilding`, `surface` and `nbRoom` are `NaN` 
 - Update fields values:
   - `typeOfBuilding` to lowercase
