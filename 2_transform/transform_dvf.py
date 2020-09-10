@@ -3,6 +3,7 @@ import argparse
 import pandas as pd
 import numpy as np
 from progress.bar import ShadyBar
+from datetime import datetime
 
 
 def get_year():
@@ -128,6 +129,33 @@ def validation(df):
     return df
 
 
+def groupby(df):
+    """
+    Group by _idMutation, summing surface and nbRoom together and diplaying other field as such
+
+    Args:
+        df (DataFrame): DataFrame on which to perform the groupby
+
+    Returns:
+        DataFrame: Update DataFrame
+    """
+    return df.groupby("_idMutation", as_index=True).agg({
+        "createdAt": "first",
+        "typeOfSearch": "first",
+        "price": "first",
+        "streetNumber": "first",
+        "streetName": "first",
+        "postalCode": "first",
+        "city": "first",
+        "departement": "first",
+        "typeOfBuilding": "first",
+        "surface": "sum",
+        "nbRoom": "sum",
+        "longitude": "first",
+        "latitude": "first"
+    })
+
+
 def save_df(df, year):
     """
     Save df as csv file with year in filename
@@ -139,15 +167,18 @@ def save_df(df, year):
     df.to_csv(f"data/dvf_{year}_updated.csv")
 
 
-def main():
+def main(timer=False):
     """
     Perform TRANSFORM on csv file with year passed as args
     """
 
+    if timer:
+        start_timer = datetime.now()
+
     # Init bar
     bar = ShadyBar(
         "Processing Data".ljust(25),
-        max=5,
+        max=6,
         width=50)
 
     year = get_year()
@@ -167,9 +198,16 @@ def main():
     validation(dvf_DF)
     bar.next()
 
+    groupby(dvf_DF)
+    bar.next()
+
     save_df(dvf_DF, year)
 
     bar.finish()
 
+    if timer:
+        end_timer = datetime.now() - start_timer
+        print(f"Execution time: {str(end_timer).split('.', 2)[0]}")
 
-main()
+
+main(timer=True)
