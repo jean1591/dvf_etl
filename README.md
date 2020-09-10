@@ -5,8 +5,8 @@ This script will extract data, transform and load it to custom DB.
 
 
 ## Usage
-To run script with data from 2019:
-`sh main.sh -y 2019`
+To extract data from `2019`, transform and load it to DB named `db_name` and collection name `c_name`:   
+`sh main.sh -y 2019 -d db_name -c c_name`
 
 **Note:**
 Minimum year value is 2014, maximum is 2019.
