@@ -11,6 +11,34 @@ To extract data from `2019`, transform and load it to DB named `db_name` and col
 **Note:**
 Minimum year value is 2014, maximum is 2019.
 
+### Example
+Running `sh main.sh -y 2017 -d perso -c DVF` should display: 
+```bash
+>> PERFORMING ETL ON DVF_2017 <<
+
+>> EXTRACT
+Downloading https://cadastre.data.gouv.fr/data/etalab-dvf/latest/csv/2017/full.csv.gz
+data/dvf_2017.csv.gz      100%[==================================>]  90,34M  51,7MB/s    ds 1,7s
+Extracting dvf_2017.csv.gz into dvf_2017.csv
+
+>> TRANSFORM
+Processing Data           |██████████████████████████████████████████████████| 6/6
+Execution time: 0:00:24
+
+>> LOAD
+Loading dvf_2017_updated.csv into perso.DVF
+2020-09-10T10:14:20.871+0200	connected to: mongodb://localhost/
+2020-09-10T10:14:20.872+0200	dropping: perso.DVF
+2020-09-10T10:14:23.873+0200	[#####...................] perso.DVF	23.3MB/101MB (23.0%)
+2020-09-10T10:14:26.875+0200	[###########.............] perso.DVF	49.5MB/101MB (48.8%)
+2020-09-10T10:14:29.872+0200	[#################.......] perso.DVF	74.5MB/101MB (73.5%)
+2020-09-10T10:14:32.874+0200	[#######################.] perso.DVF	99.5MB/101MB (98.1%)
+2020-09-10T10:14:33.112+0200	[########################] perso.DVF	101MB/101MB (100.0%)
+2020-09-10T10:14:33.112+0200	897213 document(s) imported successfully. 0 document(s) failed to import.
+
+>> EOF <<
+```
+
 
 ## Details
 ### Extract
