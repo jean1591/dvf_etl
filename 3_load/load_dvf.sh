@@ -12,4 +12,4 @@ do
 done
 
 echo "Loading dvf_"$year"_updated.csv into "$db"."$collection
-mongoimport --db $db --collection $collection --drop --type csv --file data/dvf_"$year"_updated.csv --headerline
+mongoimport --db $db --collection $collection --type csv --file data/dvf_"$year"_updated.csv --headerline
