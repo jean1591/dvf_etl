@@ -1,5 +1,4 @@
 # IMPORTS
-import argparse
 import logging
 import pandas as pd
 import numpy as np
@@ -199,7 +198,7 @@ def transform(args):
     
     # Save df as csv
     save_df(df, args)
-    
+
     bar.finish()
 
   except Exception:

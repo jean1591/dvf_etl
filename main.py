@@ -5,6 +5,7 @@ import logging
 # FILES
 from extract import extract
 from transform import transform
+from load import load
 
 
 def get_args():
@@ -18,10 +19,13 @@ def get_args():
 
     # Retrieve args
     parser.add_argument("-y", "--year", help="Year to Fetch")
+    parser.add_argument("-d", "--db", help="DB")
+    parser.add_argument("-c", "--collection", help="DB collection")
+    parser.add_argument("-r", "--remove", action="store_true")
     parser.add_argument("-s", "--save", action="store_true")
     args = parser.parse_args()
 
-    return {"year": args.year, "save": args.save}
+    return {"year": args.year, "db": args.db, "collection": args.collection, "remove": args.remove, "save": args.save}
 
 
 def clear_log_file():
@@ -30,7 +34,7 @@ def clear_log_file():
 
 
 # INIT LOG FILE
-logging.basicConfig(filename="activity.log", format="%(asctime)s::%(levelname)-10s::%(message)s", level=logging.INFO, datefmt="%Y-%m-%d %H:%M:%S")
+logging.basicConfig(filename="activity.log", format="%(asctime)s::%(levelname)s::%(message)s", level=logging.INFO, datefmt="%Y-%m-%d %H:%M:%S")
 
 
 def main():
@@ -47,10 +51,20 @@ def main():
 
   if args["year"] is None:
     logging.error("Year not specified")
-    logging.error("ETL >> Failed >> End")
+    logging.error("ETL >> Failed")
+    return
+
+  if args["db"] is None:
+    logging.error("DB not specified")
+    logging.error("ETL >> Failed")
+    return
+
+  if args["collection"] is None:
+    logging.error("Collection not specified")
+    logging.error("ETL >> Failed")
     return
   
-
+  
   # >> EXTRACT
   logging.info("Extract >> Start")
   try:
@@ -74,6 +88,14 @@ def main():
 
 
   # >> LOAD
+  logging.info("Load >> Start")
+  try:
+    load(args)
+    logging.info("Load >> End")
+  except Exception:
+    logging.error("Load >> Failed")
+    logging.error("ETL >> Failed")
+    return
 
 
   logging.info("ETL >> End")

@@ -1,15 +1,4 @@
-2020-11-05 17:01:12::INFO      ::ETL >> Start
-2020-11-05 17:01:12::INFO      ::Extract >> Start
-2020-11-05 17:01:12::INFO      ::Downloading dvf_2016.csv.gz
-2020-11-05 17:01:14::INFO      ::Extracting dvf_2016.csv.gz
-2020-11-05 17:01:16::INFO      ::Extract >> End
-2020-11-05 17:01:16::INFO      ::Transform >> Start
-2020-11-05 17:01:16::INFO      ::Loading dvf_2016.csv to DataFrame
-2020-11-05 17:01:24::INFO      ::Dropping NaN rows
-2020-11-05 17:01:25::INFO      ::Updated fields value
-2020-11-05 17:01:26::INFO      ::Validating 4999 < price < 1999999
-2020-11-05 17:01:26::INFO      ::Validating 9 < surface < 1001
-2020-11-05 17:01:27::INFO      ::Grouping rows by id
-2020-11-05 17:01:29::INFO      ::Saving DataFrame
-2020-11-05 17:01:39::INFO      ::Transform >> End
-2020-11-05 17:01:39::INFO      ::ETL >> End
+2020-11-05 17:29:32::INFO::ETL >> Start
+2020-11-05 17:29:32::INFO::Load >> Start
+2020-11-05 17:29:44::INFO::Load >> End
+2020-11-05 17:29:44::INFO::ETL >> End
