@@ -1,0 +1,8 @@
+INFO:ETL >> Start
+INFO:Extract >> Start
+INFO:Downloading dvf_2014.csv.gz
+INFO:... Done
+INFO:Extracting dvf_2014.csv.gz
+INFO:... Done
+INFO:Extract >> End
+INFO:ETL >> End
