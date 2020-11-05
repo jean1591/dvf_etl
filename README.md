@@ -6,13 +6,13 @@ This script will extract data, transform and load it to custom DB.
 
 ## Usage
 To extract data from `2019`, transform and load it to DB named `db_name` and collection name `c_name`:   
-`sh main.sh -y 2019 -d db_name -c c_name`
+`python3 main.py -y 2016 -s -d perso -c DVF -r`
 
 **Note:**
 Minimum year value is 2014, maximum is 2019.
 
 ### Example
-Running `sh main.sh -y 2017 -d perso -c DVF` should display: 
+Running `python3 main.py -y 2016 -s -d perso -c DVF -r` should display: 
 ```bash
 >> PERFORMING ETL ON DVF_2017 <<
 

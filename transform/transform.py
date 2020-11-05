@@ -167,6 +167,7 @@ def save_df(df, args):
 
     try:
       df.to_csv(f"data/dvf_{args['year']}_updated.csv")
+      print("DataFrame saved to CSV file") if args["verbose"] else None
     except Exception as e:
       print(e)
       logging.error("... Failed")
@@ -175,31 +176,32 @@ def save_df(df, args):
 
 def transform(args):
   try:
-
     # Init bar
-    bar = ShadyBar(
-        "Processing Data".ljust(25),
-        max=6,
-        width=50)
+    # bar = ShadyBar("Processing Data".ljust(25), max=6, width=50) if args["verbose"] else None
     
     # Transform
     df = csv_to_df(args["year"])
-    bar.next()
+    # bar.next() if args["verbose"] else None
+    print("CSV loaded to DataFrame") if args["verbose"] else None
     df = drop_na(df)
-    bar.next()
+    # bar.next()
+    print("NaN dropped") if args["verbose"] else None
     df = update_fields_values(df)
-    bar.next()
+    # bar.next()
     df = validation_int(df, "price", 1999999, 4999)
-    bar.next()
+    print("Price validated") if args["verbose"] else None
+    # bar.next()
     df = validation_int(df, "surface", 1001, 9)
-    bar.next()
+    print("Surface validated") if args["verbose"] else None
+    # bar.next()
     df = groupby(df)
-    bar.next()
+    print("Rows grouped per id") if args["verbose"] else None
+    # bar.next()
     
     # Save df as csv
     save_df(df, args)
 
-    bar.finish()
+    # bar.finish()
 
   except Exception:
       raise

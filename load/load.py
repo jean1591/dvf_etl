@@ -10,6 +10,9 @@ def load(args):
     # Drop collection if specified
     cmd.append("--drop") if args["remove"] else None
 
+    # Hide message is specified
+    cmd.append("--quiet") if not args["verbose"] else None
+
     # Run command
     subprocess.run(cmd, check=True)
   except subprocess.CalledProcessError:

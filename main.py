@@ -23,9 +23,10 @@ def get_args():
     parser.add_argument("-c", "--collection", help="DB collection")
     parser.add_argument("-r", "--remove", action="store_true")
     parser.add_argument("-s", "--save", action="store_true")
+    parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
 
-    return {"year": args.year, "db": args.db, "collection": args.collection, "remove": args.remove, "save": args.save}
+    return {"year": args.year, "db": args.db, "collection": args.collection, "remove": args.remove, "save": args.save, "verbose": args.verbose}
 
 
 def clear_log_file():
@@ -64,9 +65,13 @@ def main():
     logging.error("ETL >> Failed")
     return
   
+
+  print(f">> PERFORMING ETL ON DVF_{args['year']} <<") if args["verbose"] else None
   
+
   # >> EXTRACT
   logging.info("Extract >> Start")
+  print("\n>> EXTRACT <<") if args["verbose"] else None
   try:
     extract(args)
     logging.info("Extract >> End")
@@ -78,6 +83,7 @@ def main():
 
   # >> TRANSFORM
   logging.info("Transform >> Start")
+  print("\n>> TRANSFORM <<") if args["verbose"] else None
   try:
     transform(args)
     logging.info("Transform >> End")
@@ -89,6 +95,7 @@ def main():
 
   # >> LOAD
   logging.info("Load >> Start")
+  print("\n>> LOAD <<") if args["verbose"] else None
   try:
     load(args)
     logging.info("Load >> End")
