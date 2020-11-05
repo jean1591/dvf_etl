@@ -1,7 +1,10 @@
 # IMPORTS
-from os import system
 import argparse
 import logging
+
+# FILES
+from extract import extract
+from transform import transform
 
 
 def get_args():
@@ -15,14 +18,10 @@ def get_args():
 
     # Retrieve args
     parser.add_argument("-y", "--year", help="Year to Fetch")
+    parser.add_argument("-s", "--save", action="store_true")
     args = parser.parse_args()
 
-    return {"year": args.year}
-
-
-# Get args
-args = get_args()
-logging.basicConfig(filename="activity.log", format="%(levelname)s:%(message)s", level=logging.INFO)
+    return {"year": args.year, "save": args.save}
 
 
 def clear_log_file():
@@ -30,24 +29,51 @@ def clear_log_file():
     pass
 
 
+# INIT LOG FILE
+logging.basicConfig(filename="activity.log", format="%(asctime)s::%(levelname)-10s::%(message)s", level=logging.INFO, datefmt="%Y-%m-%d %H:%M:%S")
+
+
 def main():
   """
   Script to perform ETL on a DVF file
   Source: https://cadastre.data.gouv.fr/data/etalab-dvf/latest/csv/
   """
+
   logging.info("ETL >> Start")
+
+
+  # ARGS & CHECKS
+  args = get_args()
+
+  if args["year"] is None:
+    logging.error("Year not specified")
+    logging.error("ETL >> Failed >> End")
+    return
   
-  # EXTRACT
+
+  # >> EXTRACT
   logging.info("Extract >> Start")
   try:
-    system(f"python3 1_extract/download_extract.py -y {args['year']}")
+    extract(args)
     logging.info("Extract >> End")
-  except Exception as e:
+  except Exception:
     logging.error("Extract >> Failed")
+    logging.error("ETL >> Failed")
+    return
 
-  # TRANSFORM
 
-  # LOAD
+  # >> TRANSFORM
+  logging.info("Transform >> Start")
+  try:
+    transform(args)
+    logging.info("Transform >> End")
+  except Exception:
+    logging.error("Transform >> Failed")
+    logging.error("ETL >> Failed")
+    return
+
+
+  # >> LOAD
 
 
   logging.info("ETL >> End")
