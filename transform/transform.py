@@ -5,7 +5,6 @@ import numpy as np
 from progress.bar import ShadyBar
 
 
-
 def csv_to_df(year):
   """
   Load csv file to a DataFrame
@@ -176,32 +175,20 @@ def save_df(df, args):
 
 def transform(args):
   try:
-    # Init bar
-    # bar = ShadyBar("Processing Data".ljust(25), max=6, width=50) if args["verbose"] else None
-    
-    # Transform
     df = csv_to_df(args["year"])
-    # bar.next() if args["verbose"] else None
     print("CSV loaded to DataFrame") if args["verbose"] else None
     df = drop_na(df)
-    # bar.next()
-    print("NaN dropped") if args["verbose"] else None
+    print("NaN values dropped") if args["verbose"] else None
     df = update_fields_values(df)
-    # bar.next()
     df = validation_int(df, "price", 1999999, 4999)
     print("Price validated") if args["verbose"] else None
-    # bar.next()
     df = validation_int(df, "surface", 1001, 9)
     print("Surface validated") if args["verbose"] else None
-    # bar.next()
     df = groupby(df)
     print("Rows grouped per id") if args["verbose"] else None
-    # bar.next()
     
     # Save df as csv
     save_df(df, args)
-
-    # bar.finish()
 
   except Exception:
       raise

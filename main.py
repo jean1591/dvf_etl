@@ -106,6 +106,8 @@ def main():
 
 
   logging.info("ETL >> End")
+  print(f">> EOF <<") if args["verbose"] else None
+
 
 clear_log_file()
 main()

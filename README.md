@@ -6,35 +6,36 @@ This script will extract data, transform and load it to custom DB.
 
 ## Usage
 To extract data from `2019`, transform and load it to DB named `db_name` and collection name `c_name`:   
-`python3 main.py -y 2016 -s -d perso -c DVF -r`
+`python3 main.py -y 2019 -s -d perso -c DVF -r`
 
 **Note:**
 Minimum year value is 2014, maximum is 2019.
 
 ### Example
-Running `python3 main.py -y 2016 -s -d perso -c DVF -r` should display: 
+Running `python3 main.py -y 2019 -d perso -c DVF -v -s` should display: 
 ```bash
->> PERFORMING ETL ON DVF_2017 <<
+>> PERFORMING ETL ON DVF_2019 <<
 
->> EXTRACT
-Downloading https://cadastre.data.gouv.fr/data/etalab-dvf/latest/csv/2017/full.csv.gz
-data/dvf_2017.csv.gz      100%[==================================>]  90,34M  51,7MB/s    ds 1,7s
-Extracting dvf_2017.csv.gz into dvf_2017.csv
+>> EXTRACT <<
+Downloading https://cadastre.data.gouv.fr/data/etalab-dvf/latest/csv/2015/full.csv.gz
+data/dvf_2019.csv.gz      100%[==================================>]  74,30M  44,5MB/s    ds 1,7s
+Extracting dvf_2019.csv.gz into dvf_2019.csv
 
->> TRANSFORM
-Processing Data           |██████████████████████████████████████████████████| 6/6
-Execution time: 0:00:24
+>> TRANSFORM <<
+CSV loaded to DataFrame
+NaN values dropped
+Price validated
+Surface validated
+Rows grouped per id
+DataFrame saved to CSV file
 
->> LOAD
-Loading dvf_2017_updated.csv into perso.DVF
-2020-09-10T10:14:20.871+0200	connected to: mongodb://localhost/
-2020-09-10T10:14:20.872+0200	dropping: perso.DVF
-2020-09-10T10:14:23.873+0200	[#####...................] perso.DVF	23.3MB/101MB (23.0%)
-2020-09-10T10:14:26.875+0200	[###########.............] perso.DVF	49.5MB/101MB (48.8%)
-2020-09-10T10:14:29.872+0200	[#################.......] perso.DVF	74.5MB/101MB (73.5%)
-2020-09-10T10:14:32.874+0200	[#######################.] perso.DVF	99.5MB/101MB (98.1%)
-2020-09-10T10:14:33.112+0200	[########################] perso.DVF	101MB/101MB (100.0%)
-2020-09-10T10:14:33.112+0200	897213 document(s) imported successfully. 0 document(s) failed to import.
+>> LOAD <<
+2020-11-05T17:56:01.684+0100	connected to: mongodb://localhost/
+2020-11-05T17:56:04.686+0100	[######..................] perso.DVF	25.9MB/94.7MB (27.4%)
+2020-11-05T17:56:07.685+0100	[#############...........] perso.DVF	52.2MB/94.7MB (55.1%)
+2020-11-05T17:56:10.687+0100	[###################.....] perso.DVF	77.8MB/94.7MB (82.2%)
+2020-11-05T17:56:12.643+0100	[########################] perso.DVF	94.7MB/94.7MB (100.0%)
+2020-11-05T17:56:12.643+0100	818434 document(s) imported successfully. 0 document(s) failed to import.
 
 >> EOF <<
 ```
