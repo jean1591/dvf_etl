@@ -1,4 +1,20 @@
-2020-11-06 08:41:11::INFO::ETL >> Start
-2020-11-06 08:41:11::INFO::Load >> Start
-2020-11-06 08:41:11::INFO::Load >> End
-2020-11-06 08:41:11::INFO::ETL >> End
+2020-11-12 11:50:53::INFO::ETL >> Start
+2020-11-12 11:50:53::INFO::Extract >> Start
+2020-11-12 11:50:53::INFO::Downloading dvf_2020.csv.gz
+2020-11-12 11:50:54::INFO::Extracting dvf_2020.csv.gz
+2020-11-12 11:50:54::INFO::Extract >> End
+2020-11-12 11:50:54::INFO::Transform >> Start
+2020-11-12 11:50:54::INFO::Loading dvf_2020.csv to DataFrame
+2020-11-12 11:50:56::INFO::Dropping NaN rows
+2020-11-12 11:50:57::INFO::Updated fields value
+2020-11-12 11:50:57::INFO::Validating 4999 < price < 1999999
+2020-11-12 11:50:58::INFO::Validating 9 < surface < 1001
+2020-11-12 11:50:58::INFO::Grouping rows by id
+2020-11-12 11:50:58::INFO::Saving DataFrame
+2020-11-12 11:50:59::INFO::Updating date format in JSON file
+2020-11-12 11:51:07::INFO::Transform >> End
+2020-11-12 11:51:07::INFO::Load >> Start
+2020-11-12 11:51:07::INFO::Loading dvf_2020_updated.csv to DB
+2020-11-12 11:51:12::INFO::Deleting dvf_2020_updated.csv & dvf_2020.csv
+2020-11-12 11:51:12::INFO::Load >> End
+2020-11-12 11:51:12::INFO::ETL >> End

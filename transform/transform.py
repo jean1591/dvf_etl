@@ -2,7 +2,7 @@
 import logging
 import pandas as pd
 import numpy as np
-from progress.bar import ShadyBar
+import json
 
 
 def csv_to_df(year):
@@ -36,7 +36,7 @@ def csv_to_df(year):
 
     # Rename columns
     df.columns = ["_idMutation", "createdAt", "typeOfSearch", "price", "streetNumber", "houseNumber", "streetName",
-                  "postalCode", "city", "departement", "typeOfBuilding", "surface", "nbRoom", "longitude", "latitude"]
+                  "postalCode", "city", "state", "typeOfBuilding", "surface", "nbRoom", "longitude", "latitude"]
 
     return df
   except FileNotFoundError:
@@ -87,10 +87,12 @@ def update_fields_values(df):
   logging.info(f"Updated fields value")
 
   try:
-    # Lowercase on all typeOfBuilding
+    # typeOfBuilding / streetName / city
     df["typeOfBuilding"] = df["typeOfBuilding"].str.lower()
+    df["streetName"] = df["streetName"].str.lower()
+    df["city"] = df["city"].str.lower()
 
-    # Lowercase on all typeOfSearch & Update "vente" to "achat"
+    # typeOfSearch: Lowercase & Update "vente" to "achat"
     df["typeOfSearch"] = df["typeOfSearch"].str.lower()
     df["typeOfSearch"] = np.where(
         df["typeOfSearch"] == "vente", "achat", df["typeOfSearch"])
@@ -143,7 +145,7 @@ def groupby(df):
   try:
     df = df.groupby("_idMutation", as_index=True).agg({
         "createdAt": "first", "typeOfSearch": "first", "price": "first", "streetNumber": "first", "houseNumber": "first", "streetName": "first",
-        "postalCode": "first", "city": "first", "departement": "first", "typeOfBuilding": "first", "surface": "sum", "nbRoom": "sum", "longitude": "first", "latitude": "first"
+        "postalCode": "first", "city": "first", "state": "first", "typeOfBuilding": "first", "surface": "sum", "nbRoom": "sum", "longitude": "first", "latitude": "first"
     })
 
     return df
@@ -152,26 +154,42 @@ def groupby(df):
     raise
 
 
-def save_df(df, args):
-  """
-  Save df as csv file with year in filename
-
-  Args:
-      df (DataFrame): DataFrame to save
-      args (dict): Argument passed, includes year and save
-  """
+def save_df_to_json(df, args):
 
   if args["save"] is not None:
-    logging.info(f"Saving DataFrame")
+    logging.info(f"Saving DataFrame as JSON file")
 
     try:
-      df.to_csv(f"data/dvf_{args['year']}_updated.csv")
-      print("DataFrame saved to CSV file") if args["verbose"] else None
+      df.to_json(f"data/dvf_{args['year']}_updated.json", orient="records", date_format="iso")
+      print("DataFrame saved to JSON file") if args["verbose"] else None
     except Exception as e:
       print(e)
       logging.error("... Failed")
       raise
 
+
+def update_dates(json_file, args):
+    data = []
+
+    logging.info(f"Updating date format in JSON file")
+
+    try:
+      # Open json file
+      with open(f"data/{json_file}.json", "r") as f:
+          data = json.load(f)
+      
+      for d in data:
+          d["createdAt"] = {"$date": d["createdAt"]}
+
+      # Write to json file
+      with open(f"data/{json_file}.json", 'w') as f:
+          json.dump(data, f, indent=4)
+      
+      print("Dates modified in JSON file") if args["verbose"] else None
+    except Exception as e:
+      print(e)
+      logging.error("... Failed")
+      raise
 
 def transform(args):
   try:
@@ -187,8 +205,12 @@ def transform(args):
     df = groupby(df)
     print("Rows grouped per id") if args["verbose"] else None
     
-    # Save df as csv
-    save_df(df, args)
+    # Save df
+    save_df_to_json(df, args)
+
+    # Update dates
+    update_dates(f"dvf_{args['year']}_updated", args)
+
 
   except Exception:
       raise

@@ -19,9 +19,11 @@ def delete_file(filename):
 
 
 def load(args):
+  # Load CSV file
   try:
+    logging.info(f"Loading dvf_{args['year']}_updated.json to DB")
     # Init command
-    cmd = ["mongoimport", "--db", args['db'], "--collection", args['collection'], "--type", "csv", "--file", f"data/dvf_{args['year']}_updated.csv", "--headerline"]
+    cmd = ["mongoimport", "--db", args['db'], "--collection", args['collection'], "--type", "json", "--file", f"data/dvf_{args['year']}_updated.json", "--jsonArray"]
 
     # Drop collection if specified
     cmd.append("--drop") if args["remove"] else None
@@ -30,7 +32,7 @@ def load(args):
     cmd.append("--quiet") if not args["verbose"] else None
 
     # Run command
-    # subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True)
   except subprocess.CalledProcessError:
     logging.error("... Failed >> CalledProcessError")
     raise
@@ -38,7 +40,12 @@ def load(args):
     logging.error("... Failed")
     raise
 
-  # Delete CSV files
-  delete_file(f"dvf_{args['year']}_updated.csv")
-  delete_file(f"dvf_{args['year']}.csv")
+  # Delete files
+  try:
+    logging.info(f"Deleting dvf_{args['year']}_updated.json & dvf_{args['year']}.csv")
+    delete_file(f"dvf_{args['year']}_updated.json")
+    delete_file(f"dvf_{args['year']}.csv")
+  except Exception:
+    logging.error("... Failed")
+    raise
     
